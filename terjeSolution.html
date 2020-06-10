@@ -1,9 +1,18 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
 <body>
-    <input type="range" min="1" max="100" value="5"/>
+    <input type="range" min="1" max="100" value="5" oninput="changeColumnCount(this.value)"/>
     <div id="multiplicationMatrix"></div>
     <script>
-        // model
+        // hjelpevariabler for view og controller
         let multiplicationMatrixDiv = document.getElementById('multiplicationMatrix');
+
+        // model
         let columnCount = 5;
         let multiplicationMatrix = [
             1, 2, 3, 4, 5,
@@ -27,16 +36,16 @@
         }
 
         // controller
-        function multiply(value) {
+        function changeColumnCount(value) {
             columnCount = value;
             multiplicationMatrix = [];
-
-            for (let number1 = 1; number1 <= value; number1++) {
-                for (let number2 = 1; number2 <= value; number2++) {
-                    multiplicationMatrix.push(number1 * number2);
+            for (let n1 = 1; n1 <= value; n1++) {
+                for (let n2 = 1; n2 <= value; n2++) {
+                    multiplicationMatrix.push(n1 * n2);
                 }
             }
             show();
         }
     </script>
 </body>
+</html>

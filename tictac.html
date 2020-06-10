@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Tre på rad</title>
+    <style type="text/css">
+        div {
+            user-select: none;
+        }
+
+            div.cell {
+                background-color: lightgray;
+                width: 100px;
+                height: 100px;
+                float: left;
+                margin: 2px;
+                font-size: 500%;
+                font-family: helvetica;
+                text-align: center;
+                vertical-align: middle;
+            }
+
+            div.first {
+                clear: left;
+            }
+
+            div.coloro {
+                color: blue;
+            }
+
+            div.colorx {
+                color: green;
+            }
+    </style>
+</head>
+<body>
+    <div id="board"></div>
+    <button onclick="reset(this)">Reset</button>
+    <script type="text/javascript">
+        // hjelpevariabler for view og controller
+        let boardDiv = document.getElementById('board');
+
+        // model
+        let board = ['', '', '', '', '', '', '', '', ''];
+        var isGameGo = true;
+        var resetTrue = false; //for reset function
+        
+        // view
+        show();
+        function show() {
+            let html = '';
+            for (let i = 0; i < 9; i++) {
+                let first = i % 3 == 0 ? 'first' : '';
+                if (!resetTrue) { //sets each box to '' if true
+                    html += `<div onclick="setX(${i})" class="cell color${board[i]} ${first}">${board[i]}</div>`;
+                } else {
+                    html += `<div onclick="setX(${i})" class="cell color${board[i]} ${first}"></div>`;
+                }    
+            }
+            resetTrue = false;
+            boardDiv.innerHTML = html;
+        }
+
+        // controller
+        
+        function setX(index) {
+            console.log(index);
+            if (board[index] === '' && isGameGo) {
+                board[index] = 'x';
+                setTimeout(winConditions,400);
+                setO();
+            }
+            show();
+        }
+
+        function setO() {
+            let blankIndexes = Array.from(board.keys()).filter(i => board[i] === '');
+            if (blankIndexes.length === 0) return;
+            let random = Math.floor(Math.random() * blankIndexes.length);
+            let blankIndex = blankIndexes[random];
+            board[blankIndex] = 'o';
+            setTimeout(winConditions,400);
+            show();
+        }
+
+        function winConditions(){
+            return winState(0, 1, 2) ||
+            winState(3, 4, 5) ||
+            winState(6, 7, 8) ||
+            winState(0, 3, 6) ||
+            winState(1, 4, 7) ||
+            winState(2, 5, 8) ||
+            winState(0, 4, 8) ||
+            winState(2, 4, 6) ;
+        }
+        function winState(index1, index2, index3){
+            if (board[index1] == "x" && board[index2] == "x" && board[index3] == "x" && isGameGo) {
+                alert("You win!");
+                isGameGo = false;
+            }
+            else if (board[index1] == "o" && board[index2] == "o" && board[index3] == "o" && isGameGo) {
+                alert("You lose.");
+                isGameGo = false;
+            }
+            // //else {
+            //     alert("It's a draw!")
+            // }
+        }
+        function reset(){
+            board = ['', '', '', '', '', '', '', '', '']; //resets board variable
+            resetTrue = true;
+            isGameGo = true;
+            show();
+        }
+    </script>
+</body>
+</html>

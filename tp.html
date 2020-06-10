@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Yessss</title>
+        <!-- 
+            Stein, saks, papir
+            Potet, håndkle, saks
+            Who rules who? Dog, Cat, Human!
+            Grass, Water, Fire (starters!)
+            Ramen, Udon, Soba
+            Block, Punch, Grab
+            lOT OF CATS IN DIFFERENT HATS
+            Grass, Water, Fire, Electric, Ground, ???? (hvis vi får til!)
+
+            Goals!
+            - Pictures instead of just words!
+            - Win condition! MED KATTER
+            - 1 wins over 2, 2 wins over 3, 3 wins over !
+            - Best 2 out of 3
+
+            Secondary goals?
+            - Pokémon mode with separate selectors for generation
+            - BILDER!!!!
+            
+        -->
+        <style>
+            body {
+                user-select: none;
+                    font-family: Arial, Helvetica, sans-serif;
+            }
+            .buttons {
+                font-size: x-large;
+                
+                color: blueviolet;
+            }
+        </style>
+    </head>
+    <body>
+
+        <img id="1" onclick="optionSelect(this)" width=200 ></img>
+        <img id="2" onclick="optionSelect(this)" width=200 src="https://cdn.bulbagarden.net/upload/thumb/9/91/255Torchic.png/900px-255Torchic.png"></img>
+        <img id="3" onclick="optionSelect(this)" width=200 src="https://cdn.bulbagarden.net/upload/thumb/6/60/258Mudkip.png/900px-258Mudkip.png"></img>
+        <div onclick="optionSelect(this)" id="1" class="buttons">First thing</div>
+        <div onclick="optionSelect(this)" id="2" class="buttons">Second thing</div>
+        <div onclick="optionSelect(this)" id="3" class="buttons">Thingy</div>
+        
+        <h1 id="computer">Computer says: </h1>
+        <h1 id="player">You say: </h1>
+        <h1 id="results"></h1>
+        
+        <select onchange="changeTheme(this.value)" id="themes">
+            <option selected disabled hidden>Pick a theme!</option>
+            <option value="classic">Classic</option>
+            <option value="household">Household Creatures</option>
+            <option value="noodles">Noodles</option>
+            <option value="pokemon">Pokemon</option>
+        </select>
+        <script>
+            //model
+            function $(id) {
+                return document.getElementById(id)
+            }
+            
+            classic = ["Rock", "Paper", "Scissors"];
+            pokemonPics = ["https://cdn.bulbagarden.net/upload/thumb/2/2c/252Treecko.png/900px-252Treecko.png","https://cdn.bulbagarden.net/upload/thumb/9/91/255Torchic.png/900px-255Torchic.png","https://cdn.bulbagarden.net/upload/thumb/6/60/258Mudkip.png/900px-258Mudkip.png"];
+            household = ["Dog", "Human", "Cat"];
+            noodles = ["Ramen", "Udon", "Soba"];
+            pokemon = ["Grass", "Fire", "Water"];
+            
+
+            options = {
+                1: "Rock",
+                2: "Paper",
+                3: "Scissors"
+            };
+            
+            var playerSelect = "what you select!";
+            var computerSelect = "what the computer selects!";
+            var loseOrWin = "either win or lose!";
+            var winsCounter = 0;
+            
+            //view
+            show();
+            function show(){
+                $("1").innerHTML = options[1];
+                $("2").innerHTML = options[2];
+                $("3").innerHTML = options[3];
+
+                // put the words in the divs
+                // bird is the word
+                // da bird is the word
+            }
+
+            function draw() {
+                $("results").innerHTML = `Ya both picked ${playerSelect}!!! Try again.`;
+            }
+            function results() {
+                winsCounter++;
+                $("results").innerHTML = `You ${loseOrWin}! ${winner} beats ${loser}`; //swap around if computer wins!
+                // if (winsCounter >= 2) {ultimateWinner();}
+            }
+            function ultimateWinner() {
+                // alert("ULTIMATE WINNER!!!!! A WINNER IS YOU!!!!")
+            }
+
+            //controller
+            function changeTheme(theme) {
+                if (theme == "classic") {chosenTheme = classic;}
+                if (theme == "household") {chosenTheme = household;}
+                if (theme == "noodles") {chosenTheme = noodles;}
+                if (theme == "pokemon") {chosenTheme = pokemon; chosenPics = pokemonPics;}
+                itemKey = 1;
+                picKey = 1;
+                chosenTheme.forEach(item => {
+                    options[itemKey] = item;
+                    itemKey++;
+                });
+                chosenPics.forEach(pic => {
+                    $(picKey).source = pic;
+                    picKey++;
+                });
+                
+                show();
+            }
+
+            function optionSelect(number) {
+                playerSelect = options[number.id];
+                var computerSelect = options[Math.floor((Math.random() * 3) + 1)];
+                console.log(playerSelect);
+                $("computer").innerHTML = `Computer says: ${computerSelect}`
+                $("player").innerHTML = `You say: ${playerSelect}`
+                
+                if ((playerSelect == options[1] && computerSelect == options[3]) ||
+                    (playerSelect == [2] && computerSelect == options[1]) ||
+                    (playerSelect == options[3] && computerSelect == options[2])) {
+                        loseOrWin = "win!"; winner = playerSelect; loser = computerSelect;
+                        results();
+                    }
+                else if (playerSelect == computerSelect) {
+                    draw();
+                } else {
+                    loseOrWin = "lose!"; winner = computerSelect; loser = playerSelect;
+                    results();
+                }
+            }
+        </script>
+    </body>
+</html>
